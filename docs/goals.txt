@@ -1,0 +1,38 @@
+1: Hello world, getting to know byte code
+
+    * Call method (ex: System.currentTimeMillis() )
+    * Add a local String variable
+    * Add a local int variable
+    * Add a for loop
+    * Add a try / catch
+
+    What byte code is produced by each of these additions?
+
+2: Uppercase: Creating an agent that transforms byte code on the fly
+
+    * Run java -jar java -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar
+    * Run jps to find PID of above
+    * Run java -jar java -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar <PID>
+
+    What happens? Why did it happen? (Hint: Unpack jar file, look at MANIFEST.MF)
+
+    Can you attach a debugger and add a break point where bytecode is rewritten?
+
+    Can you change UppercaseMethodVisitor such that Integer constants are incremented by one?
+
+
+3: Linecount: A simple, line counting code coverage tool
+
+    * Registry: Implement this class such that RegistryTest passes
+    * LineCountMethodVisitor: TODO 1: Register which lines of class has code
+    * LineCountMethodVisitor: TODO 2: Add byte code to call Registry.countLine() for each line
+        (Hint: Run RegistryTest.main() to see sample ASM code generating a call to Registry.countLine()
+    * LineCountAgent.addShutdownHook: Add a shutdown hook which calls Registry.printCoverage() at JVM exit
+
+    Tips:
+    * Running: java -javaagent:linecount/target/bytecodez-linecount-1.0-SNAPSHOT.jar=prefix=no.kantega -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar
+    * Debugging: java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -javaagent:linecount/target/bytecodez-linecount-1.0-SNAPSHOT.jar=prefix=no.kantega -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar
+
+
+
+4: There is no 4. We herebye declare you to be a byte code and code coverage expert!
