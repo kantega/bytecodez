@@ -27,22 +27,32 @@ public class Registry {
     private static SortedMap<String, Map<Integer, Integer>> lineCounts= new TreeMap<String, Map<Integer, Integer>>();
 
     public static void countLine(String className, int lineNumber) {
-        // TODO
+        Map<Integer, Integer> lines = lineCounts.get(className);
+        Integer count = lines.get(lineNumber);
+        lines.put(lineNumber, count +1);
+
     }
 
     public static SortedSet<String> getRegisteredClassNames() {
         // TODO
-        return null;
+        return new TreeSet<String>(lineCounts.keySet());
     }
 
     public static int getLineCount(String className, int lineNumber) {
         // TODO
-        return 0;
+        Integer count = lineCounts.get(className).get(lineNumber);
+        return count == null ? -1 : count;
     }
 
     public static int[] getLinesOfClass(String className) {
         //TODO
-        return null;
+        Map<Integer, Integer> lines = lineCounts.get(className);
+        int[] arr = new int[lines.size()];
+        int c = 0;
+        for(int l : lines.keySet()) {
+            arr[c++] = l;
+        }
+        return arr;
     }
 
     public static void registerClass(String className, int[] lineNumbers) {
