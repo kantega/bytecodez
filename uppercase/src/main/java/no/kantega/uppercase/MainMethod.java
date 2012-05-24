@@ -30,31 +30,37 @@ import java.net.URLDecoder;
 public class MainMethod {
 
     public static void main(String[] args) throws InterruptedException, AgentInitializationException, IOException, AgentLoadException, AttachNotSupportedException {
-        final String jarPath = getJarLocation().getAbsolutePath();
-
-        System.out.println("Loading agent " + jarPath);
-
-        String identifier = args[0];
-
-        try {
-            identifier = Integer.toString(Integer.parseInt(identifier));
-        } catch (NumberFormatException e) {
+        if (args.length == 0) {
             for (VirtualMachineDescriptor machine : VirtualMachine.list()) {
-                if (machine.displayName().equals(identifier)) {
-                    identifier = machine.id();
-                    break;
+                System.out.println("Process: " + machine.id());
+            }
+        } else {
+            final String jarPath = getJarLocation().getAbsolutePath();
+
+            System.out.println("Loading agent " + jarPath);
+
+            String identifier = args[0];
+
+            try {
+                identifier = Integer.toString(Integer.parseInt(identifier));
+            } catch (NumberFormatException e) {
+                for (VirtualMachineDescriptor machine : VirtualMachine.list()) {
+                    if (machine.displayName().equals(identifier)) {
+                        identifier = machine.id();
+                        break;
+                    }
                 }
             }
+
+            final VirtualMachine machine = VirtualMachine.attach(identifier);
+
+            if (args.length == 1) {
+                machine.loadAgent(jarPath);
+            } else {
+                machine.loadAgent(jarPath, args[1]);
+            }
+
         }
-
-        final VirtualMachine machine = VirtualMachine.attach(identifier);
-
-        if (args.length == 1) {
-            machine.loadAgent(jarPath);
-        } else {
-            machine.loadAgent(jarPath, args[1]);
-        }
-
     }
 
     /**
