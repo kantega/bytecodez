@@ -17,7 +17,11 @@
 package no.kantega.linecount;
 
 import java.lang.instrument.Instrumentation;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
+
+import static java.lang.String.format;
 
 /**
  *
@@ -28,21 +32,33 @@ public class LineCountAgent {
      * Run before main method
      *
      */
-    public static void agentmain(String options, Instrumentation instrumentation) throws Exception {
-        addTransformer(options, instrumentation, true);
+    public static void premain(String options, Instrumentation instrumentation) throws Exception {
+        String prefix = options(options).getProperty("prefix");
+
+        instrumentation.addTransformer(new LineCountTransformer(prefix));
+
+        addShutdownHook();
     }
 
     /**
      * Run at agent injection
      */
-    public static void premain(String options, Instrumentation instrumentation) throws Exception {
-        addTransformer(options, instrumentation, true);
-    }
-
-    private static void addTransformer(String options, Instrumentation instrumentation, boolean canRetransform) {
+    public static void agentmain(String options, Instrumentation instrumentation) throws Exception {
         String prefix = options(options).getProperty("prefix");
 
-        instrumentation.addTransformer(new LineCountTransformer(prefix), canRetransform);
+        instrumentation.addTransformer(new LineCountTransformer(prefix), true);
+
+        Set<Class> retransforms = new HashSet<Class>();
+
+        for(Class clazz : instrumentation.getAllLoadedClasses()) {
+            if(clazz.getName().startsWith(prefix)) {
+                retransforms.add(clazz);
+            }
+        }
+
+        System.out.println(format("Retransforming %s classes", retransforms.size()));
+
+        instrumentation.retransformClasses(retransforms.toArray(new Class[retransforms.size()]));
 
         addShutdownHook();
     }
@@ -53,12 +69,6 @@ public class LineCountAgent {
             Registry.printCoverage();
             // TODO: is called before the JVM exits
         }
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                Registry.printCoverage();
-            }
-        });
     }
 
 

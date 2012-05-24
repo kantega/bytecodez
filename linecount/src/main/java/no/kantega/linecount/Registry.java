@@ -24,28 +24,23 @@ import java.util.*;
 public class Registry {
 
 
-    private static SortedMap<String, Map<Integer, Integer>> lineCounts= new TreeMap<String, Map<Integer, Integer>>();
+    private static SortedMap<String, SortedMap<Integer, Integer>> lineCounts= new TreeMap<String, SortedMap<Integer, Integer>>();
 
     public static void countLine(String className, int lineNumber) {
-        Map<Integer, Integer> lines = lineCounts.get(className);
-        Integer count = lines.get(lineNumber);
-        lines.put(lineNumber, count +1);
-
+        // TODO
     }
 
     public static SortedSet<String> getRegisteredClassNames() {
         // TODO
-        return new TreeSet<String>(lineCounts.keySet());
+        return null;
     }
 
     public static int getLineCount(String className, int lineNumber) {
         // TODO
-        Integer count = lineCounts.get(className).get(lineNumber);
-        return count == null ? -1 : count;
+        return 0;
     }
 
     public static int[] getLinesOfClass(String className) {
-        //TODO
         Map<Integer, Integer> lines = lineCounts.get(className);
         int[] arr = new int[lines.size()];
         int c = 0;
@@ -57,7 +52,7 @@ public class Registry {
 
     public static void registerClass(String className, int[] lineNumbers) {
         // Set inital count of all lines to 0
-        HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
+        SortedMap<Integer, Integer> counts = new TreeMap<Integer, Integer>();
         lineCounts.put(className, counts);
         for(int lineNumber : lineNumbers) {
             counts.put(lineNumber, 0);

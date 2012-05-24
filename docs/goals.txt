@@ -1,5 +1,8 @@
 1: Hello world, getting to know byte code
 
+    Run HelloWorldByteCode.main. Add the following Java constructs
+    to the greet method:
+
     * Call method (ex: System.currentTimeMillis() )
     * Add a local String variable
     * Add a local int variable
@@ -10,13 +13,13 @@
 
 2: Uppercase: Creating an agent that transforms byte code on the fly
 
-    * Run java -jar java -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar
+    * Run java -jar helloworld/target/bytecodez-helloworld-1.0-SNAPSHOT.jar
     * Run jps to find PID of above
-    * Run java -jar java -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar <PID>
+    * Run java -jar uppercase/target/bytecodez-uppercase-1.0-SNAPSHOT.jar <PID> prefix=no.kantega.helloworld
 
-    What happens? Why did it happen? (Hint: Unpack jar file, look at MANIFEST.MF)
+    What happens? Why did it happen? (Hint: Unpack the uppercase agent jar file, look at MANIFEST.MF)
 
-    Can you attach a debugger and add a break point where bytecode is rewritten?
+    Can you attach a debugger to the helloworld process and add a break point where bytecode is rewritten?
 
     Can you change UppercaseMethodVisitor such that Integer constants are incremented by one?
 

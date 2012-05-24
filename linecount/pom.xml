@@ -40,6 +40,7 @@
                         <manifestEntries>
                             <Agent-Class>no.kantega.linecount.LineCountAgent</Agent-Class>
                             <Premain-Class>no.kantega.linecount.LineCountAgent</Premain-Class>
+                            <Main-Class>no.kantega.linecount.MainMethod</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>

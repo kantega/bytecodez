@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package no.kantega;
+package no.kantega.helloworld;
 
 /**
  * Hello world!
  */
 public class HelloWorld
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) throws InterruptedException {
+        for(int i = 0; i < 1000; i++) {
+            greet();
+            Thread.sleep(2000);
+        }
+    }
+
+    private static void greet() {
         System.out.println( "Hello World!" );
     }
 }
